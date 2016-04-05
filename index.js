@@ -62,7 +62,8 @@ Twig.extend(function(Twig) {
 });
 
 module.exports = function(source) {
-    var id = require.resolve(this.resource),
+    var fullpath = require.resolve(this.resource),
+        id = loaderUtils.interpolateName(this, fullpath + "#[hash]", { content: source }),
         tpl;
     this.cacheable && this.cacheable();
 
