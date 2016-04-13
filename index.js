@@ -66,6 +66,18 @@ module.exports = function(source) {
         tpl;
     this.cacheable && this.cacheable();
 
+    var settings = this.options.twig;
+
+    if ( typeof settings === 'undefined' ) {
+        settings = {
+            extend: function () {},
+            params: {
+                allowInlineIncludes: true
+            }
+        };
+    }
+
+    Twig.extend(settings.extend.bind(this));
     // check if template already exists
     tpl = Twig.twig({ ref: id });
     if (!tpl) {
