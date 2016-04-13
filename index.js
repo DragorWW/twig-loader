@@ -3,6 +3,14 @@ var _ = require("underscore");
 var path = require("path");
 var loaderUtils = require("loader-utils");
 
+var isApplySettings = false;
+var settings = {
+    extend: function () {},
+    params: {
+        allowInlineIncludes: true
+    }
+};
+
 var twigExtend = function(Twig) {
     var compiler = Twig.compiler;
 
@@ -66,19 +74,17 @@ module.exports = function(source) {
         tpl;
     this.cacheable && this.cacheable();
 
-    var settings = this.options.twig;
+    if (!isApplySettings) {
+        isApplySettings = true;
 
-    if ( typeof settings === 'undefined' ) {
-        settings = {
-            extend: function () {},
-            params: {
-                allowInlineIncludes: true
-            }
-        };
+        if ( typeof this.options.twig !== 'undefined' ) {
+            settings = this.options.twig;
+        }
+
+        Twig.extend(settings.extend.bind(this));
+        Twig.extend(twigExtend);
     }
 
-    Twig.extend(settings.extend.bind(this));
-    Twig.extend(twigExtend);
 
     // check if template already exists
     tpl = Twig.twig({ ref: id });
