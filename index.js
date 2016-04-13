@@ -77,8 +77,8 @@ module.exports = function(source) {
     if (!isApplySettings) {
         isApplySettings = true;
 
-        if ( typeof this.options.twig !== 'undefined' ) {
-            settings = this.options.twig;
+        if ( typeof this.options.twig === "object" ) {
+            settings = _.extend(settings, this.options.twig);
         }
 
         Twig.extend(settings.extend.bind(this));
