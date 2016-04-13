@@ -9,11 +9,10 @@ Webpack loader for compiling Twig.js templates. This loader will allow you to re
 
 [Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html?branch=master)
 
-``` javascript
+```javascript
 
 module.exports = {
     //...
-
     module: {
         loaders: [
             { test: /\.twig$/, loader: "twig-loader" }
@@ -42,6 +41,21 @@ var html = template({title: 'dialog title'});
 // => Render the view with the given context
 
 ```
+
+## Extend twig in twig-loader
+You can extend twig in build process, see on [twig.js wiki](https://github.com/justjohn/twig.js/wiki/Extending-twig.js)
+```javascript
+module.exports = {
+    twig: {
+        extend: function(Twig) {
+          Twig.extendFunction("repeat", function(value, times) {
+              return new Array(times+1).join(value);
+          });
+        }
+    }
+}
+```
+
 
 When you extend another view, it will also be added as a dependency. Include and Import are not yet supported (check back soon).
 
